@@ -13,6 +13,7 @@ class _HomePageState extends State<HomePage> {
   final phoneController = TextEditingController();
   final ageController = TextEditingController();
   final departmentController = TextEditingController();
+  final hospitalNumber = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +35,28 @@ class _HomePageState extends State<HomePage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 100),
+                Text("name"),
+                const SizedBox(height: 5),
                 buildInput("name", nameController),
                 const SizedBox(height: 20),
+                Text("Phone"),
+                const SizedBox(height: 5),
                 buildInput("Phone Number", phoneController),
                 const SizedBox(height: 20),
+                Text("Hospital Number"),
+                const SizedBox(height: 5),
+                buildInput("hospital", hospitalNumber),
+                const SizedBox(height: 20),
+                Text("age"),
+                const SizedBox(height: 5),
                 buildInput("age", ageController),
                 const SizedBox(height: 20),
+                Text("department"),
+                const SizedBox(height: 5),
                 buildInput("department", departmentController),
                 const SizedBox(height: 20),
                 GestureDetector(
@@ -52,18 +67,16 @@ class _HomePageState extends State<HomePage> {
                     try {
                       var response = await client.post(
                           Uri.parse(
-                              "https://africas.up.railway.app/sms/send/${message}/${phoneController.text}"),
+                              "https://africas.up.railway.app/sms/send/${message}/${phoneController.text}/${hospitalNumber.text}"),
                           headers: {
                             "Accept": "application/json",
                             "Content-type": "application/x-www-form-urlencoded"
                           });
-                          if(response.statusCode == 200){
-                            print("Message sent");
-                          }else{
-                            print("Message not sent");
-                          }
-
-
+                      if (response.statusCode == 200) {
+                        print("Message sent");
+                      } else {
+                        print("Message not sent");
+                      }
 
                       print("Message sent");
                     } catch (e) {
