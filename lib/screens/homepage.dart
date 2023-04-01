@@ -15,6 +15,8 @@ class _HomePageState extends State<HomePage> {
   final departmentController = TextEditingController();
   final hospitalNumber = TextEditingController();
 
+  bool sending = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,8 +61,11 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 5),
                 buildInput("department", departmentController),
                 const SizedBox(height: 20),
-                GestureDetector(
+                sending ? Center(child: const CircularProgressIndicator()) : GestureDetector(
                   onTap: () async {
+                    setState(() {
+                      sending = true;
+                    });
                     var message =
                         "Hello there from ${phoneController.text} my name is ${nameController.text}. I am ${ageController.text} this years old. I am requestin to get a chance to meet the doctor in ${departmentController.text} department";
                     var client = Client();
@@ -74,8 +79,24 @@ class _HomePageState extends State<HomePage> {
                           });
                       if (response.statusCode == 200) {
                         print("Message sent");
+                        setState(() {
+                          sending = false;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Message sent"),
+                            ),
+                          );
+                        });
                       } else {
                         print("Message not sent");
+                        setState(() {
+                          sending = false;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Message not sent"),
+                            ),
+                          );
+                        });
                       }
 
                       print("Message sent");
